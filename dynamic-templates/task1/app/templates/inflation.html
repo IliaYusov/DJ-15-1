@@ -19,7 +19,25 @@
         <div class="col s12 m8">
         
         <!-- Ваша логика -->
-
+          <table>
+            <thead>
+              <tr>
+                {% for item in header %}
+                  <th> {{ item }} </th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              <tr>
+                {% for item in row %}
+                  <td style="background-color: {{ item.color }}"> {{ item.value }} </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        <!-- Конец вашей логики -->
         </div>
       </div>
     {% endblock %}

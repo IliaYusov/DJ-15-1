@@ -107,6 +107,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 SECRET_KEY = 'put your secret here'
+
+INFLATION_PALETTE = {
+    '<0%': '#66bb6a',
+    '0-1%': '#ffffff',
+    '1-2%': '#ffcdd2',
+    '2-5%': '#e57373',
+    '>5%': '#f44336',
+    'sum': '#9e9e9e',
+    'empty': '#ffffff',
+    'year': '#e3f2fd'
+}
+
 DEBUG = True
 
 try:
