@@ -7,5 +7,21 @@
         <div class="header">
             <h1>Сравнение телефонов</h1>
         </div>
+        <div class="table">
+            <table style="width:100%">
+                <tr>
+                    {% for item in table_header %}
+                        <th>{{ item }}</th>
+                    {% endfor %}
+                </tr>
+                {% for line in table_lines %}
+                    <tr>
+                    {% for item in line %}
+                        <td>{{ item | safe }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock %}

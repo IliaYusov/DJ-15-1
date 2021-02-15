@@ -8,12 +8,21 @@
             <h1><a href="/catalog">Каталог</a></h1>
         </div>
 
-        <div class="sort-block">
+        <div class="sort-block" style="margin-bottom: 30px">
             {# Здесь должен быть раздел с сортировкой #}
+            Сортировать по:
+            <a style="padding: 20px" href="/catalog?sort=name">названию</a>
+            <a style="padding: 20px" href="/catalog?sort=min-price">начиная с дешевых</a>
+            <a style="padding: 20px" href="/catalog?sort=max-price">начиная с дорогих</a>
         </div>
 
         <div class="content">
             {# Здесь должен отображаться каталог с телефонами #}
+            {% for phone in phones %}
+                <div style="float: left; width: 50%; padding-bottom: 70px">
+                    {% include "phone-card.html" %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

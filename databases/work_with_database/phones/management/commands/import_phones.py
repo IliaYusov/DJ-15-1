@@ -1,7 +1,8 @@
 import csv
-
+from datetime import date
 from django.core.management.base import BaseCommand
 from phones.models import Phone
+from django.utils.text import slugify
 
 
 class Command(BaseCommand):
@@ -16,5 +17,13 @@ class Command(BaseCommand):
             next(phone_reader)
 
             for line in phone_reader:
-                # TODO: Добавьте сохранение модели
-                pass
+                p = Phone(
+                    name=line[1],
+                    price=int(line[3]),
+                    image=line[2],
+                    release_date=date.fromisoformat(line[4]),
+                    lte_exists=line[5],
+                    slug=slugify(line[1])
+                )
+                p.clean_fields()
+                p.save()
