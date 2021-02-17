@@ -11,19 +11,8 @@ def books_view(request):
 
 def book_detail_view(request, date):
     template = 'books/books_detail_view.html'
-    context = {}
-    books_ordered = Book.objects.order_by('pub_date')
-    for index, book in enumerate(books_ordered):
-        if book.pub_date == date.date():
-            context['book'] = book
-            if index > 0:
-                context['previous_book'] = books_ordered[index - 1]
-            else:
-                context['previous_book'] = None
-            if index < len(books_ordered) - 1:
-                context['next_book'] = books_ordered[index + 1]
-            else:
-                context['next_book'] = None
-            break
+    context = {'books': Book.objects.filter(pub_date=date).order_by('pub_date'),
+               'next_book': Book.objects.filter(pub_date__gt=date).order_by('pub_date').first(),
+               'previous_book': Book.objects.filter(pub_date__lt=date).order_by('-pub_date').first()}
     print(context)
     return render(request, template, context)
