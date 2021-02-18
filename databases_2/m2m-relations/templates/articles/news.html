@@ -14,11 +14,14 @@
         </h4>
         <p class="card-text">{{ article.text }}</p>
         {% for scope in article.scopes.all %}
-          <span class="badge {% if scope.is_main %}badge-primary{% else %}badge-secondary{% endif %}">{{ scope.topic }}</span>
+          <span class="badge badge-primary">{% if scope.is_main %}{{ scope.scope }}{% endif %}</span>
+        {% endfor %}
+        {% for scope in article.scopes.all|dictsort:"scope.topic" %}
+          <span class="badge badge-secondary">{% if not scope.is_main %}{{ scope.scope }}{% endif %}</span>
         {% endfor %}
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
-{% endblock %}
+{% endblock %}a

@@ -12,4 +12,6 @@ def articles_list(request):
     # https://docs.djangoproject.com/en/2.2/ref/models/querysets/#django.db.models.query.QuerySet.order_by
     ordering = '-published_at'
 
+    context['object_list'] = Article.objects.defer('published_at', 'author__phone').order_by(ordering).select_related('author', 'genre')
+
     return render(request, template_name, context)

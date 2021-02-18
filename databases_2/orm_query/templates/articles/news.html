@@ -12,6 +12,12 @@
         <h4 class="card-title">
           <a href="#">{{ article.title }}</a>
         </h4>
+        <h5 class="card-author">
+          <p>{{ article.author }}</p>
+        </h5>
+        <h6 class="card-genre">
+          <p>{{ article.genre }}</p>
+        </h6>
         <p class="card-text">{{ article.text }}</p>
         {% for scope in article.scopes.all %}
           <span class="badge {% if scope.is_main %}badge-primary{% else %}badge-secondary{% endif %}">{{ scope.topic }}</span>
