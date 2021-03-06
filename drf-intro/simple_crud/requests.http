@@ -1,0 +1,11 @@
+GET http://127.0.0.1:8000/api/v1/projects
+
+###
+
+POST http://127.0.0.1:8000/measurements/
+Content-Type: application/json
+
+{
+  "value": "36.6",
+  "project": "2"
+}
