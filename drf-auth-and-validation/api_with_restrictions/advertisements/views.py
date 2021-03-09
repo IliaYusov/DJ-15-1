@@ -1,3 +1,5 @@
+from rest_framework.decorators import action
+
 from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement
 from advertisements.serializers import AdvertisementSerializer
@@ -40,7 +42,7 @@ class AdvertisementViewSet(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        if "status" in request.data and Advertisement.objects.get(id=kwargs['pk']).status != 'OPEN':
+        if 'status' in request.data and Advertisement.objects.get(id=kwargs['pk']).status != 'OPEN':
             open_advert_count = Advertisement.objects.filter(
                 creator=request.user).filter(
                 status='OPEN').count()
@@ -49,7 +51,7 @@ class AdvertisementViewSet(ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
-        if "status" in request.data and Advertisement.objects.get(id=kwargs['pk']).status != 'OPEN':
+        if 'status' in request.data and Advertisement.objects.get(id=kwargs['pk']).status != 'OPEN':
             open_advert_count = Advertisement.objects.filter(
                 creator=request.user).filter(
                 status='OPEN').count()
@@ -57,10 +59,26 @@ class AdvertisementViewSet(ModelViewSet):
                 return Response(data='Max advertisements number', status=status.HTTP_400_BAD_REQUEST)
         return super().partial_update(request, *args, **kwargs)
 
+    @action(detail=True, methods=['put'])
+    def add_to_favourites(self, request, pk=None):
+        advertisement = Advertisement.objects.get(id=pk)
+        if advertisement.creator_id == request.user.id:
+            return Response(data="Can't favourite own advertisement", status=status.HTTP_400_BAD_REQUEST)
+        advertisement.favourite_of.add(request.user.id)
+        return Response()
+
+    @action(detail=True, methods=['put'])
+    def remove_from_favourites(self, request, pk=None):
+        advertisement = Advertisement.objects.get(id=pk)
+        if request.user not in advertisement.favourite_of.all():
+            return Response(data="Not in your favourites", status=status.HTTP_400_BAD_REQUEST)
+        advertisement.favourite_of.remove(request.user.id)
+        return Response()
+
     def get_permissions(self):
         """Получение прав для действий."""
         if self.action in ["update", "partial_update", "destroy"]:
             return [IsAuthenticated(), IsOwner()] or [IsAdmin()]
-        elif self.action == "create":
-            return [IsAuthenticated()] or [IsAdmin()]
+        elif self.action in ["create", "add_to_favourites"]:
+            return [IsAuthenticated()]
         return []

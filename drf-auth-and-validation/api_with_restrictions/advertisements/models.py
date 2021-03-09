@@ -29,13 +29,8 @@ class Advertisement(models.Model):
         auto_now=True
     )
 
-
-class FavouriteAdvertisements(models.Model):
-    user = models.ForeignKey(
+    favourite_of = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    advertisement = models.ForeignKey(
-        Advertisement,
-        on_delete=models.CASCADE
+        related_name='user_favourites',
+        default=None
     )
