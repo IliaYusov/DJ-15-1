@@ -20,10 +20,15 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    favourite_of = serializers.SerializerMethodField(method_name='favourite_boolean')
+
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
                   'status', 'created_at', 'favourite_of')
+
+    def favourite_boolean(self, obj):
+        return self.context["request"].user in obj.favourite_of.all()
 
     def create(self, validated_data):
         """Метод для создания"""
